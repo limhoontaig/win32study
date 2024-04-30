@@ -1,6 +1,7 @@
 ﻿// win32Timer.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
+#include <stdio.h>
 #include "framework.h"
 #include "win32Timer.h"
 
@@ -10,12 +11,14 @@
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+int g_nOneSecond, g_nTenSecond;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+VOID    CALLBACK    OneTimerProc(HWND, UINT, UINT_PTR, DWORD);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -123,8 +126,15 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static char string[100];
+
     switch (message)
     {
+    case WM_CREATE:
+        SetTimer(hWnd, 1, 1000, OneTimerProc);
+        SetTimer(hWnd, 2, 10000, OneTimerProc);
+        break;
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -147,6 +157,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+            sprintf_s(string, "1초 타이머: %d 10초 타이머: %d", g_nOneSecond, g_nTenSecond);
+            TextOut(hdc, 10, 30, string, strlen(string));
             EndPaint(hWnd, &ps);
         }
         break;
@@ -178,3 +190,13 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return (INT_PTR)FALSE;
 }
+
+VOID    CALLBACK    OneTimerProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
+{
+    if (idEvent == 1)
+        g_nOneSecond++;
+    else
+        g_nTenSecond++;
+    InvalidateRect(hWnd, NULL, TRUE);
+}
+
