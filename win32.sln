@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32controls", "win32contr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32Timer", "win32Timer\win32Timer.vcxproj", "{FC8A46E6-3495-4944-92E8-8D126B12CC50}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32Bitmap", "win32Bitmap\win32Bitmap.vcxproj", "{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{FC8A46E6-3495-4944-92E8-8D126B12CC50}.Release|x64.Build.0 = Release|x64
 		{FC8A46E6-3495-4944-92E8-8D126B12CC50}.Release|x86.ActiveCfg = Release|Win32
 		{FC8A46E6-3495-4944-92E8-8D126B12CC50}.Release|x86.Build.0 = Release|Win32
+		{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}.Debug|x64.ActiveCfg = Debug|x64
+		{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}.Debug|x64.Build.0 = Debug|x64
+		{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}.Debug|x86.ActiveCfg = Debug|Win32
+		{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}.Debug|x86.Build.0 = Debug|Win32
+		{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}.Release|x64.ActiveCfg = Release|x64
+		{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}.Release|x64.Build.0 = Release|x64
+		{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}.Release|x86.ActiveCfg = Release|Win32
+		{E2E776BC-E6B2-4AAC-A111-2E148E24E8DB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
