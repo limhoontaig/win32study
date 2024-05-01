@@ -1,6 +1,7 @@
 ﻿// win32controls.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
+#include <stdio.h>
 #include "framework.h"
 #include "win32controls.h"
 
@@ -16,6 +17,8 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK    DlgProc(HWND, UINT, WPARAM, LPARAM);
+VOID    TestFunction(HWND);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -131,6 +134,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // 메뉴 선택을 구문 분석합니다:
             switch (wmId)
             {
+            case ID_32771:
+                DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, DlgProc);
+                break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
@@ -147,9 +153,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+            char string[1024] = "메뉴 사용방법 : 파일 섭메뉴 다이어로그 오픈을 선택하면 새로운 창이 뜨고 한글시험 버튼을 크릭하면 작은 화면에 사각형 20개가 그려진다.";
+            sprintf_s(string, "%s", string);
+            TextOut(hdc, 50, 50, string, strlen(string));
             EndPaint(hWnd, &ps);
         }
         break;
+
+    
+
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -177,4 +189,63 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+// 다이어로그 대화 상자의 메시지 처리기입니다.
+INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    UNREFERENCED_PARAMETER(lParam);
+    int wmID, wmEvent;
+    wmID = LOWORD(wParam);
+    HWND hIDC_BUTTON1 = GetDlgItem(hDlg, IDC_BUTTON1);
+    switch (message)
+    {
+    case WM_COMMAND:
+        switch (wmID)
+        {
+        case IDC_BUTTON1:
+            TestFunction(hDlg);
+            
+            
+            break;
+
+        case IDOK || IDCANCEL:
+            // (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+
+            break;
+        }
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(hDlg, &ps);
+        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+        static char string[100];
+        sprintf_s(string, "text %d", 5);
+        TextOut(hdc, 200, 30, string, strlen(string));
+        EndPaint(hDlg, &ps);
+    }
+    break;
+    case WM_CLOSE:
+        EndDialog(hDlg, 0);
+        return (INT_PTR)TRUE;
+    }
+    return (INT_PTR)FALSE;
+}
+
+VOID    TestFunction(HWND hDlg)
+{
+    HDC hdc = GetDC(hDlg);
+    //Rectangle(hdc, 5, 5, 10, 10);
+    
+    for (int i = 1; i < 20; i++)
+    {
+        Rectangle(hdc, i * 5 + 150, i * 5 + 150, i * 10 + 150 , i * 10 + 150);
+    }
+    
+    ReleaseDC(hDlg, hdc);
+    //InvalidateRect(hWnd, NULL, FALSE);
+    
 }
