@@ -123,8 +123,40 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    HDC hdc;
+    PAINTSTRUCT ps;
+    static char string[100];
+    static int nIndex;
+
     switch (message)
     {
+    case WM_CHAR:
+        string[nIndex] = (char)wParam;
+        nIndex++;
+        InvalidateRect(hWnd, NULL, TRUE);
+        break;
+
+    // 모든 키에 대해서 발생하는 메세지 WM_KEYDOWN
+    // 키 구분 방법 : wParam (가상 키코드, 문자는 대문자)
+    // 가상 키코드 : VK_LEFT, VK_HOME 등 '1' 'A' 문자 상수 사용
+    case WM_KEYDOWN:
+        // keyboard 출력은 모든 키가 다 눌러짐
+        //string[nIndex] = (char)wParam;
+        //nIndex++;
+        //InvalidateRect(hWnd, NULL, TRUE);
+        switch (wParam)
+        {
+        case VK_LEFT:
+            MessageBox(hWnd, "Pressed LEFT KEY", "시험용 캡션입니다.", MB_ABORTRETRYIGNORE);
+            break;
+        case VK_F1:
+            MessageBox(hWnd, "Pressed F1 KEY", "F1 키용 캡션입니다.", MB_YESNO);
+            break;
+        case VK_RIGHT:
+            MessageBox(hWnd, "Pressed Right Key", "캡션입니다.", MB_YESNO);
+            break;
+        }
+        break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -147,6 +179,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+            TextOut(hdc, 10, 10, string, strlen(string));
+
             EndPaint(hWnd, &ps);
         }
         break;
