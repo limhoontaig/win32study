@@ -1,9 +1,8 @@
-﻿// win32Mouse.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// win32KeyBoard.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
-#include <stdio.h>
 #include "framework.h"
-#include "win32Mouse.h"
+#include "win32KeyBoard.h"
 
 #define MAX_LOADSTRING 100
 
@@ -17,7 +16,6 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-VOID                Test(HWND hWnd, int nXPos, int nYPos);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -31,7 +29,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_WIN32MOUSE, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_WIN32KEYBOARD, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
@@ -40,7 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32MOUSE));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WIN32KEYBOARD));
 
     MSG msg;
 
@@ -75,10 +73,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WIN32MOUSE));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WIN32KEYBOARD));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WIN32MOUSE);
+    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_WIN32KEYBOARD);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -125,24 +123,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    HDC hdc;
-    PAINTSTRUCT ps;
-    static int nXPos, nYPos;
-    static char string[100];
-    int t = rand() % 30 + 5;
     switch (message)
     {
-    case WM_MOUSEMOVE:
-        nXPos = LOWORD(lParam);
-        nYPos = HIWORD(lParam);
-        if (wParam == MK_LBUTTON)
-            sprintf_s(string, "마우스 드래그 중 X : %d Y : %d", nXPos, nYPos);
-        else
-            sprintf_s(string, "마우스 이동 중 X : %d Y : %d", nXPos, nYPos);
-        Test(hWnd, nXPos, nYPos);
-        Sleep(t);
-        InvalidateRect(hWnd, 0, TRUE);
-
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -165,11 +147,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            TextOut(hdc, 30, 50, string, strlen(string));
-
-            sprintf_s(string, "Mouse x Position: %d, y Position: %d", nXPos, nYPos);
-            SetTextColor(hdc, RGB(255, 0, 0));
-            //TextOut(hdc, 50, 50, string, strlen(string));
             EndPaint(hWnd, &ps);
         }
         break;
@@ -180,68 +157,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
-}
-
-VOID Test(HWND hWnd, int nXPos, int nYPos)
-{
-    PAINTSTRUCT ps;
-    // HDC hdc = GetDC(hWnd);
-    HDC hdc = BeginPaint(hWnd, &ps);
-    // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-    HPEN hPen, hOldPen;
-    HBRUSH hBrush, hOldBrush;
-    int r, g, b;
-    r = rand() % 255;
-    g = rand() % 255;
-    b = rand() % 255;
-    hBrush = CreateSolidBrush(RGB(r, g, b));
-    hPen = CreatePen(PS_SOLID, 1, RGB(r, g, b));
-    SelectObject(hdc, hBrush);
-    // MoveToEx(hdc, 50, 50, NULL);
-    // LineTo(hdc, 350, 50);
-    // nXPos, nYPos 가 0이면 오류가 발생하여 1씩 더함
-    int x, x1, y, y1;
-    int ex, ex1, ey, ey1;
-    x = rand() % (nXPos + 1);
-    x1 = rand() % (nXPos + 1);
-    y = rand() % (nYPos + 1);
-    y1 = rand() % (nYPos + 1);
-    ex = rand() % (nXPos + 1);
-    ex1 = rand() % (nXPos + 1);
-    ey = rand() % (nYPos + 1);
-    ey1 = rand() % (nYPos + 1);
-    /*
-    if (nXPos > 500)
-    {
-        x = (rand() % nXPos);
-        x1 = (rand() % nXPos);
-        y = rand() % nYPos;
-        y1 = rand() % nYPos;
-        ex = (rand() % nXPos);
-        ex1 = (rand() % nXPos);
-        ey = rand() % nYPos;
-        ey1 = rand() % nYPos;
-    }
-    else
-    {
-        x = rand() % nXPos;
-        x1 = rand() % nXPos;
-        y = rand() % nYPos;
-        y1 = rand() % nYPos;
-        ex = rand() % nXPos;
-        ex1 = rand() % nXPos;
-        ey = rand() % nYPos;
-        ey1 = rand() % nYPos;
-    }
-    */
-    Rectangle(hdc, x, x1, y, y1);
-    Ellipse(hdc, ex, ex1, ey, ey1);
-
-    hOldPen = (HPEN)SelectObject(hdc, hPen);
-    DeleteObject(hPen);
-    DeleteObject(hBrush);
-        
-    EndPaint(hWnd, &ps);
 }
 
 // 정보 대화 상자의 메시지 처리기입니다.

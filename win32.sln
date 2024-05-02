@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32TextOut_Color", "win32
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32Mouse", "win32Mouse\win32Mouse.vcxproj", "{9054C3B1-E702-44D9-8ACB-CF0D6D07DFF8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32KeyBoard", "win32KeyBoard\win32KeyBoard.vcxproj", "{7859FCE3-2B91-470D-B149-E4076BDBFE47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -91,6 +93,14 @@ Global
 		{9054C3B1-E702-44D9-8ACB-CF0D6D07DFF8}.Release|x64.Build.0 = Release|x64
 		{9054C3B1-E702-44D9-8ACB-CF0D6D07DFF8}.Release|x86.ActiveCfg = Release|Win32
 		{9054C3B1-E702-44D9-8ACB-CF0D6D07DFF8}.Release|x86.Build.0 = Release|Win32
+		{7859FCE3-2B91-470D-B149-E4076BDBFE47}.Debug|x64.ActiveCfg = Debug|x64
+		{7859FCE3-2B91-470D-B149-E4076BDBFE47}.Debug|x64.Build.0 = Debug|x64
+		{7859FCE3-2B91-470D-B149-E4076BDBFE47}.Debug|x86.ActiveCfg = Debug|Win32
+		{7859FCE3-2B91-470D-B149-E4076BDBFE47}.Debug|x86.Build.0 = Debug|Win32
+		{7859FCE3-2B91-470D-B149-E4076BDBFE47}.Release|x64.ActiveCfg = Release|x64
+		{7859FCE3-2B91-470D-B149-E4076BDBFE47}.Release|x64.Build.0 = Release|x64
+		{7859FCE3-2B91-470D-B149-E4076BDBFE47}.Release|x86.ActiveCfg = Release|Win32
+		{7859FCE3-2B91-470D-B149-E4076BDBFE47}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

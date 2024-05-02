@@ -199,7 +199,7 @@ VOID Test(HWND hWnd, int nXPos, int nYPos)
     SelectObject(hdc, hBrush);
     // MoveToEx(hdc, 50, 50, NULL);
     // LineTo(hdc, 350, 50);
-    // nXPos, nYPos 가 0이면 오류가 발생하여 1씩 더함
+    
     int x, x1, y, y1;
     int ex, ex1, ey, ey1;
     x = rand() % (nXPos + 1);
