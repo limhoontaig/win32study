@@ -19,6 +19,7 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 VOID                Test(HWND hWnd);
 VOID                Test01(HWND hWnd);
+VOID                TestSetPixel(HWND hWnd);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -128,14 +129,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     char string[100];
     static int n = 0;
+    DWORD dwColor;
+    //RECT rect{ 100, 100, 350, 350 };
     switch (message)
     {
     case WM_LBUTTONDOWN:
         n++;
         if (n % 2 == 0)
-            Test(hWnd);
+            TestSetPixel(hWnd);
         else
-            Test01(hWnd);
+        {
+            Test(hWnd);
+            InvalidateRect(hWnd, 0 , TRUE);
+        }
+
         break;
     case WM_COMMAND:
         {
@@ -160,7 +167,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            sprintf_s(string, "Text for testing :\nint number is %d, \nfloat number is %f, \ncharactor is %s", 5, 3.14, "string charactor");
+            dwColor = RGB(200, 200, 200);
+            DWORD bkColor = RGB(255, 0, 0);
+            int r, g, b;
+            r = GetRValue(dwColor);
+            g = GetGValue(dwColor);
+            b = GetBValue(dwColor);
+            SetTextColor(hdc, bkColor);
+            SetBkColor(hdc, dwColor);
+            sprintf_s(string, "Text for testing :RGB R Value is %d, RGB G Value is %d RGB B Value is %d", r, g, b);
             TextOut(hdc, 50, 50, string, strlen(string));
 
             EndPaint(hWnd, &ps);
@@ -191,6 +206,16 @@ VOID Test01(HWND hWnd)
     TextOut(hdc, 50, 80, string, strlen(string));
 
 }
+VOID TestSetPixel(HWND hWnd)
+{
+    HDC hdc = GetDC(hWnd);
+    for (int i = 0; i <= 255; i++)
+    {
+        for (int j = 0; j <= 255; j++)
+            SetPixel(hdc, i + 100, j + 100, RGB(i,j,j));
+    }
+    
+ }
 
 
 // 정보 대화 상자의 메시지 처리기입니다.
