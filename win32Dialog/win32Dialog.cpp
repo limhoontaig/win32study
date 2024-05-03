@@ -140,7 +140,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 MessageBox(hWnd, "모달형 메세지 박스 시험", "Test For MessageBox", MB_YESNO);
                 break;
             case ID_32772:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, DlgProc);
+                CreateDialog(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, DlgProc);
+                break;
+            case ID_32773:
+                DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, DlgProc);
                 break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
