@@ -1,6 +1,9 @@
 ﻿// win32Dialog.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
+
+#include <stdio.h>
+//#include <commdlg.h>
 #include "framework.h"
 #include "win32Dialog.h"
 //#include "../win32controls/resource.h"
@@ -12,6 +15,7 @@
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+HWND  g_hModelessWnd;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -145,6 +149,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case ID_32773:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, DlgProc);
                 break;
+            case ID_32774:
+                g_hModelessWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_DIALOG3), hWnd, DlgProc);
+                break;
+            case ID_32775:
+                DestroyWindow(g_hModelessWnd);
+                // DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG3), hWnd, DlgProc);
+                break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
@@ -173,13 +184,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 // IDD_DIALOG1 처리용 DlgProc
+int g_Val;
 INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT ps;
     HDC hdc;
+    char string[100];
     UNREFERENCED_PARAMETER(lParam);
     switch (message)
     {
+    case WM_INITDIALOG:
+        g_Val = 12;
+        return (INT_PTR)TRUE;
+        break;
+        
+
     case WM_COMMAND:
         
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
@@ -193,6 +212,8 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         hdc = BeginPaint(hDlg, &ps);
         // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
         TextOut(hdc, 10, 10, "모달형 다이아로그 시험", strlen("모달형 다이아로그 시험"));
+        sprintf_s(string, "%d", g_Val);
+        TextOut(hdc, 10, 30, string, strlen(string));
         EndPaint(hDlg, &ps);
         return TRUE;
 
