@@ -150,7 +150,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, DlgProc);
                 break;
             case ID_32774:
-                g_hModelessWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_DIALOG3), hWnd, DlgProc);
+                // g_hModelessWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_DIALOG3), hWnd, DlgProc);
+                DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG3), hWnd, DlgProc);
                 break;
             case ID_32775:
                 DestroyWindow(g_hModelessWnd);

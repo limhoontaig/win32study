@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32FormDialog", "Win32For
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32BitmapViewer", "win32BitmapViewer\win32BitmapViewer.vcxproj", "{AFB3BA9B-383E-4F62-B23F-B391DAC69835}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32Buttons", "win32Buttons\win32Buttons.vcxproj", "{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -121,6 +123,14 @@ Global
 		{AFB3BA9B-383E-4F62-B23F-B391DAC69835}.Release|x64.Build.0 = Release|x64
 		{AFB3BA9B-383E-4F62-B23F-B391DAC69835}.Release|x86.ActiveCfg = Release|Win32
 		{AFB3BA9B-383E-4F62-B23F-B391DAC69835}.Release|x86.Build.0 = Release|Win32
+		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Debug|x64.ActiveCfg = Debug|x64
+		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Debug|x64.Build.0 = Debug|x64
+		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Debug|x86.ActiveCfg = Debug|Win32
+		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Debug|x86.Build.0 = Debug|Win32
+		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Release|x64.ActiveCfg = Release|x64
+		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Release|x64.Build.0 = Release|x64
+		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Release|x86.ActiveCfg = Release|Win32
+		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

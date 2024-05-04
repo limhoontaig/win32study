@@ -2,6 +2,7 @@
 //
 
 #include <stdio.h>
+#include <windows.h>
 #include "framework.h"
 #include "win32controls.h"
 
