@@ -1,6 +1,7 @@
 ﻿// win32editcontrolComboListBox.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 #include <iostream>
+#include <string.h>
 #include <stdio.h>
 #include <windows.h>
 #include <Windowsx.h>
@@ -35,6 +36,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     static int nIndex = 2;
     char string[100];
     static char strItem[100];
+
     int nVal;
     switch (message)
     {
@@ -79,7 +81,22 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             nIndex++;
             return (INT_PTR)TRUE;
         case IDC_BUTTON8:
-            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
+            int CurSel = ComboBox_GetCurSel(hComboBox);
+            switch (CurSel)
+            {
+            case 0:
+                MessageBox(hDlg, "ComboBox Index 0 Item Selected", "ComboBox Selection Item Notifier", MB_YESNO);
+                return (INT_PTR)TRUE;
+            case 1:
+                MessageBox(hDlg, "ComboBox Index 1 Item Selected", "ComboBox Selection Item Notifier", MB_YESNO);
+                return (INT_PTR)TRUE;
+            case 2:
+                MessageBox(hDlg, "ComboBox Index 2 Item Selected", "ComboBox Selection Item Notifier", MB_YESNO);
+                return (INT_PTR)TRUE;
+            case 3:
+                MessageBox(hDlg, "ComboBox Index 3 Item Selected", "ComboBox Selection Item Notifier", MB_YESNO);
+                return (INT_PTR)TRUE;
+            }
             return (INT_PTR)TRUE;
         }
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
