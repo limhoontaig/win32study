@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32editcontrolComboListBo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32ListBox", "win32ListBox\win32ListBox.vcxproj", "{625099A5-772E-4C7C-ABCE-02E6A6CA61EA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32ListControl", "win32ListControl\win32ListControl.vcxproj", "{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -151,6 +153,14 @@ Global
 		{625099A5-772E-4C7C-ABCE-02E6A6CA61EA}.Release|x64.Build.0 = Release|x64
 		{625099A5-772E-4C7C-ABCE-02E6A6CA61EA}.Release|x86.ActiveCfg = Release|Win32
 		{625099A5-772E-4C7C-ABCE-02E6A6CA61EA}.Release|x86.Build.0 = Release|Win32
+		{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}.Debug|x64.ActiveCfg = Debug|x64
+		{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}.Debug|x64.Build.0 = Debug|x64
+		{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}.Debug|x86.ActiveCfg = Debug|Win32
+		{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}.Debug|x86.Build.0 = Debug|Win32
+		{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}.Release|x64.ActiveCfg = Release|x64
+		{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}.Release|x64.Build.0 = Release|x64
+		{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}.Release|x86.ActiveCfg = Release|Win32
+		{DCFC40FD-F53A-4767-90D1-ADE12F9A6622}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
