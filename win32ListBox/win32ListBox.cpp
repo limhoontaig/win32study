@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <Windowsx.h>
+#include <iostream>
 #include "framework.h"
 #include "win32ListBox.h"
 
@@ -25,12 +26,43 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
+    static HWND hListBox;
+    char string[100];
+    static int nIndex = 1;
+    const char* strMenu[3] = { "메뉴 1", "메뉴 2", "메뉴 3" };
     switch (message)
     {
     case WM_INITDIALOG:
+        hListBox = GetDlgItem(hDlg, IDC_LIST1);
+        for (int i = 0; i < 3; i++)
+        {
+            ListBox_AddString(hListBox, strMenu[i]);
+        }
         return (INT_PTR)TRUE;
 
     case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDC_BUTTON1:
+            sprintf_s(string, "메뉴 %d", nIndex++);
+            ListBox_AddString(hListBox, string);
+            return (INT_PTR)TRUE;
+        case IDC_BUTTON2:
+            nIndex = ListBox_GetCurSel(hListBox);
+            if (nIndex >= 0)
+            {
+                sprintf_s(string, "%s 를 선택", strMenu[nIndex]);
+                MessageBox(hDlg, string, "ListBox Cursor Selected Notifier", MB_YESNO);
+                return (INT_PTR)TRUE;
+            }
+            else
+            {
+                MessageBox(hDlg, "ListBox Not Selected!!", "ListBox Error Identifier", MB_YESNO);
+                return (INT_PTR)TRUE;
+            }
+            return (INT_PTR)TRUE;
+        
+        }
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {
             EndDialog(hDlg, LOWORD(wParam));
