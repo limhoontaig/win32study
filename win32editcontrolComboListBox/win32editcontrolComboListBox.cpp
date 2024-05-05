@@ -96,6 +96,9 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             case 3:
                 MessageBox(hDlg, "ComboBox Index 3 Item Selected", "ComboBox Selection Item Notifier", MB_YESNO);
                 return (INT_PTR)TRUE;
+            case CB_ERR:
+                MessageBox(hDlg, "ComboBox Not Selected", "ComboBox Selection Item Notifier", MB_YESNO);
+                return (INT_PTR)TRUE;
             }
             return (INT_PTR)TRUE;
         }
