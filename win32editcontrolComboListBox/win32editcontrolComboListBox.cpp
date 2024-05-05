@@ -30,11 +30,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
+    static HWND hComboBox;
+    const static char* strMenu[] = {"메뉴 01", "메뉴 02" , "메뉴 03" };
+    static int nIndex = 2;
     char string[100];
+    static char strItem[100];
     int nVal;
     switch (message)
     {
     case WM_INITDIALOG:
+        hComboBox = GetDlgItem(hDlg, IDC_COMBO1);
+        for (int i = 0; i < 3; i++)
+            ComboBox_AddString(hComboBox, strMenu[i]);
         return (INT_PTR)TRUE;
 
     case WM_COMMAND:
@@ -57,13 +64,19 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
             return (INT_PTR)TRUE;
         case IDC_BUTTON5:
-            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
+            ComboBox_AddString(hComboBox, IDC_COMBO1, "Add_string", TRUE);
             return (INT_PTR)TRUE;
         case IDC_BUTTON6:
-            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
+            if (nIndex >= 0)
+                ComboBox_DeleteString(hComboBox, nIndex--);
+            else
+                MessageBox(hDlg, "삭제할 콤보 메뉴가 없습니다.", "콤보 박스 항목 삭제 오류", MB_OK);
             return (INT_PTR)TRUE;
         case IDC_BUTTON7:
-            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
+            nIndex = GetDlgItemInt(hDlg, IDC_EDIT2, NULL, TRUE);
+            GetDlgItemText(hDlg, IDC_EDIT3, strItem, 99);
+            ComboBox_InsertString(hComboBox, nIndex, strItem);
+            nIndex++;
             return (INT_PTR)TRUE;
         case IDC_BUTTON8:
             SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
