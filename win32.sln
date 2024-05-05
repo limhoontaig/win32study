@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32BitmapViewer", "win32B
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32Buttons", "win32Buttons\win32Buttons.vcxproj", "{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32editcontrolComboListBox", "win32editcontrolComboListBox\win32editcontrolComboListBox.vcxproj", "{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -131,6 +133,14 @@ Global
 		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Release|x64.Build.0 = Release|x64
 		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Release|x86.ActiveCfg = Release|Win32
 		{7EF229F6-A90D-45FF-B8DC-23AAC02EEA58}.Release|x86.Build.0 = Release|Win32
+		{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}.Debug|x64.ActiveCfg = Debug|x64
+		{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}.Debug|x64.Build.0 = Debug|x64
+		{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}.Debug|x86.ActiveCfg = Debug|Win32
+		{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}.Debug|x86.Build.0 = Debug|Win32
+		{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}.Release|x64.ActiveCfg = Release|x64
+		{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}.Release|x64.Build.0 = Release|x64
+		{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}.Release|x86.ActiveCfg = Release|Win32
+		{D76CCF71-0C0E-4846-BE1F-E8EE56B21408}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
