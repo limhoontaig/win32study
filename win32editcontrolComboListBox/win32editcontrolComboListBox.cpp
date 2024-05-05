@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <windows.h>
+#include <Windowsx.h>
 #include "resource.h"
 #include "framework.h"
 #include "win32editcontrolComboListBox.h"
@@ -48,6 +49,24 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             //std::cout << "GetDlgItemInt(): " << nVal << std::endl;
             sprintf_s(string, "GetDlgItemInt(): %d", nVal);
             MessageBox(hDlg, string, "GetDlgItemInt()", MB_YESNOCANCEL);
+            return (INT_PTR)TRUE;
+        case IDC_BUTTON3:
+            SetDlgItemText(hDlg, IDC_EDIT1, "SetDlgIetmText");
+            return (INT_PTR)TRUE;
+        case IDC_BUTTON4:
+            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
+            return (INT_PTR)TRUE;
+        case IDC_BUTTON5:
+            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
+            return (INT_PTR)TRUE;
+        case IDC_BUTTON6:
+            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
+            return (INT_PTR)TRUE;
+        case IDC_BUTTON7:
+            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
+            return (INT_PTR)TRUE;
+        case IDC_BUTTON8:
+            SetDlgItemInt(hDlg, IDC_EDIT1, -100, TRUE);
             return (INT_PTR)TRUE;
         }
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
