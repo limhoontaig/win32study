@@ -149,12 +149,12 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 switch(msgBoxID)
                 {
                 case IDOK:
+                    break;
+                case IDNO:
                     ListView_DeleteAllItems(hList);
                     // 데이터 입력용 EditControl 데이터 클리어
                     ClearEditControl(hDlg);
                     MessageBox(hDlg, "IDOK", "삭제 확인", MB_ICONWARNING | MB_YESNO);
-                    break;
-                case IDNO:
                     MessageBox(
                         hDlg,
                         "IDNO",
