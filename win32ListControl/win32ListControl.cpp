@@ -36,7 +36,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     LVCOLUMN lvColumn;
     LVITEM lvItem;
     static char string[100];
-    int nIndex;
+    static int nIndex = -1;
 
     switch (message)
     {
@@ -60,6 +60,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
             // ListView 초기화 및 Index 생성
             lvItem.iItem = ListView_GetItemCount(hList);
+            
             lvItem.iSubItem = 0;
             lvItem.mask = LVIF_TEXT;
             sprintf_s(string, "%d", lvItem.iItem);
@@ -79,6 +80,26 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             SetDlgItemText(hDlg, IDC_EDIT2, NULL);
             SetDlgItemText(hDlg, IDC_EDIT3, NULL);
             return (INT_PTR)TRUE;
+        case IDC_BUTTON2:
+            if (nIndex != -1)
+            {
+                // ListView SubItem Input
+                GetDlgItemText(hDlg, IDC_EDIT1, string, 10);
+                ListView_SetItemText(hList, nIndex, 1, string);
+                GetDlgItemText(hDlg, IDC_EDIT2, string, 10);
+                ListView_SetItemText(hList, nIndex, 2, string);
+                GetDlgItemText(hDlg, IDC_EDIT3, string, 10);
+                ListView_SetItemText(hList, nIndex, 3, string);
+
+                // 데이터 입력용 EditControl 데이터 클리어
+                SetDlgItemText(hDlg, IDC_EDIT1, NULL);
+                SetDlgItemText(hDlg, IDC_EDIT2, NULL);
+                SetDlgItemText(hDlg, IDC_EDIT3, NULL);
+                return (INT_PTR)TRUE;
+
+            }
+
+            break;
         }
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {
@@ -91,10 +112,8 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         {
         case NM_CLICK:
             nIndex = ListView_GetNextItem(hList, -1, LVNI_SELECTED);
-            // sprintf_s(string, "Selected Item is %d", nIndex);
-
+            
             ListView_GetItemText(hList, nIndex, 1, string, 10);
-            //MessageBox(hDlg, string, "NM_CLICK", MB_YESNO);
             SetDlgItemText(hDlg, IDC_EDIT1, string);
             ListView_GetItemText(hList, nIndex, 2, string, 10);
             SetDlgItemText(hDlg, IDC_EDIT2, string);
