@@ -98,7 +98,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
-   RECT rt = { 0,0,299,299 };
+   RECT rt = { 0,0,600,500 };
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
        CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
    AdjustWindowRect(&rt, WS_OVERLAPPED | WS_SYSMENU | WS_CAPTION, true);
@@ -127,14 +127,38 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    static RECT Crect;
+    static RECT Wrect;
+    char string[100];
+    char GetWinRect[100];
+    int bx, by;
+    HDC hdc = GetDC(hWnd);
+    static HDC hMemDC;
+    HBITMAP hBitmap;
+    static BITMAP Bitmap;
+    static POINT ptXY0, ptXY1;
     switch (message)
     {
+    case WM_CREATE:
+        hMemDC = CreateCompatibleDC(hdc);
+        hBitmap = (HBITMAP)LoadImage(NULL, "C:\\Users\\82109\\source\\repos\\limhoontaig\\win32study\\win32Bitmap\\훈련병 임채혁(0601).bmp",
+            IMAGE_BITMAP, 0, 0,
+            LR_CREATEDIBSECTION | LR_LOADFROMFILE | LR_DEFAULTSIZE);
+        GetObject(hBitmap, sizeof(BITMAP), &Bitmap);
+        SelectObject(hMemDC, hBitmap);
+        if (hMemDC == NULL)
+            MessageBox(hWnd, "Image Not Loaded", "File Open Error", MB_YESNO);
+        DeleteObject(hBitmap);
+        break;
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
             // 메뉴 선택을 구문 분석합니다:
             switch (wmId)
             {
+            case ID_32771:
+                MoveWindow(hWnd, 300,300, 450, 350, TRUE);
+                break;
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
@@ -146,23 +170,56 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
+    case WM_LBUTTONDOWN:
+        ptXY1.x = ptXY0.x = LOWORD(lParam);
+        ptXY1.y = ptXY0.y = HIWORD(lParam);
+        GetClientRect(hWnd, &Crect);
+        InvalidateRect(hWnd, 0, TRUE);
+        break;
+    case WM_MOUSEMOVE:
+        if (wParam == MK_LBUTTON)
+        {
+            ptXY1.x = LOWORD(lParam);
+            ptXY1.y = HIWORD(lParam);
+            InvalidateRect(hWnd, 0, TRUE);
+        }
+        break;
+    case WM_MOVE:
+        GetWindowRect(hWnd, &Wrect);
+        InvalidateRect(hWnd, 0, TRUE);
+        break;
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
-            RECT rect;
-            char string[100];
             HDC hdc = BeginPaint(hWnd, &ps);
+            HBITMAP hBitmap;
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            GetClientRect(hWnd, &rect);
-            sprintf_s(string, "x: %d, y: %d, x Left: %d y Bottom: %d", 
-                rect.left, rect.top, rect.right+1, rect.bottom+1);
-            TextOut(hdc, 50,50, string, strlen(string));
+            BitBlt(hdc, 0, 0, Bitmap.bmWidth, Bitmap.bmHeight, hMemDC, 0, 0, SRCCOPY);
+            SetROP2(hdc, R2_NOTXORPEN);
+            Rectangle(hdc, ptXY0.x, ptXY0.y, ptXY1.x, ptXY1.y );
 
-
+            /*hBitmap = CreateCompatibleBitmap(hdc, 200, 200);
+            hMemDC = CreateCompatibleDC(hdc);
+            SelectObject(hMemDC, hBitmap);
+            DeleteObject(hBitmap);
+            PatBlt(hMemDC, 50,50, 100,100, WHITENESS);
+            Rectangle(hMemDC, 50,50,150,150);
+            BitBlt(hdc, 100, 100, 300,300, hMemDC, 0,0, SRCCOPY);
+            */
+            //DeleteDC(hMemDC);
+            
+            sprintf_s(string, "GetClientRect x: %d, y: %d, x Left: %d y Bottom: %d", 
+                Crect.left, Crect.top, Crect.right+1, Crect.bottom+1);
+            TextOut(hdc, 20,30, string, strlen(string));
+            sprintf_s(GetWinRect, "GetWindowRect x: %d, y: %d, x Left: %d y Bottom: %d",
+                    Wrect.left, Wrect.top, Wrect.right, Wrect.bottom);
+            TextOut(hdc, 20, 45, GetWinRect, strlen(GetWinRect));
+            
             EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:
+        DeleteDC(hMemDC);
         PostQuitMessage(0);
         break;
     default:
