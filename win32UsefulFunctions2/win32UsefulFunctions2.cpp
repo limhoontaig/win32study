@@ -171,11 +171,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             rect2.left += 3;
             rect2.right += 3;
             break;
-        case VK_DOWN:
-            rect2.top -= 3;
-            rect2.bottom -= 3;
-            break;
         case VK_UP:
+            if (rect2.top > 0)
+            {
+                rect2.top -= 3;
+                rect2.bottom -= 3;
+            }
+            else
+            {
+                rect2.top = 0;
+                rect2.bottom = 50;
+            }
+
+            break;
+        case VK_DOWN:
             rect2.top += 3;
             rect2.bottom += 3;
             break;
@@ -189,11 +198,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
             Rectangle(hdc, rect1.left, rect1.top, rect1.right, rect1.bottom);
             Rectangle(hdc, rect2.left, rect2.top, rect2.right, rect2.bottom);
-            if (IntersectRect(&rect1, &rect2, &rect3) == 0)
-                sprintf_s(string, "x: %d, y: %d 는 사각형 안에 있습니다.", pt.x, pt.y);
+            if (IntersectRect(&rect3, &rect1, &rect2) != 0)
+            {
+                TextOut(hdc, 50, 10, "Collision occured", strlen("Collision occured"));
+                sprintf_s(string, "좌표 x: %d, y: %d x1: %d Y1 %d", rect3.left, rect3.top, rect3.right, rect3.bottom);
+                TextOut(hdc, 50, 30, string, strlen(string));
+            }
             else
-                sprintf_s(string, "x: %d, y: %d 는 사각형 안에 없습니다.", pt.x, pt.y);
-            TextOut(hdc, 50, 20, string, strlen(string));
+                TextOut(hdc, 50, 10, "Not Collision occured", strlen("Not Collision occured"));
             EndPaint(hWnd, &ps);
         }
         break;
