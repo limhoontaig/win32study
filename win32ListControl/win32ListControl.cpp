@@ -77,11 +77,9 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             ListView_SetItemText(hList, lvItem.iItem, 3, string);
             
             // 데이터 입력용 EditControl 데이터 클리어
-            SetDlgItemText(hDlg, IDC_EDIT1, NULL);
-            SetDlgItemText(hDlg, IDC_EDIT2, NULL);
-            SetDlgItemText(hDlg, IDC_EDIT3, NULL);
+            ClearEditControl(hDlg);
             return (INT_PTR)TRUE;
-        case IDC_BUTTON2:
+        case IDC_BUTTON2: // Modified
             if (nIndex != -1)
             {
                 // ListView SubItem Input
@@ -93,13 +91,11 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 ListView_SetItemText(hList, nIndex, 3, string);
 
                 // 데이터 입력용 EditControl 데이터 클리어
-                SetDlgItemText(hDlg, IDC_EDIT1, NULL);
-                SetDlgItemText(hDlg, IDC_EDIT2, NULL);
-                SetDlgItemText(hDlg, IDC_EDIT3, NULL);
+                ClearEditControl(hDlg);
                 return (INT_PTR)TRUE;
             }
             break;
-        case IDC_BUTTON3:
+        case IDC_BUTTON3: // Insert
             if (nIndex != -1)
             {
                 lvItem.iItem = nIndex;
@@ -118,11 +114,10 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 ListView_SetItemText(hList, nIndex, 3, string);
 
                 // 데이터 입력용 EditControl 데이터 클리어
-                SetDlgItemText(hDlg, IDC_EDIT1, NULL);
-                SetDlgItemText(hDlg, IDC_EDIT2, NULL);
-                SetDlgItemText(hDlg, IDC_EDIT3, NULL);
+                ClearEditControl(hDlg);
                 // 순번을 다시 설정함
-                for (int i = nIndex + 1; i < nIndex; i++)
+                int nCount = ListView_GetItemCount(hList);
+                for (int i = nIndex + 1; i < nCount; i++)
                 {
                     sprintf_s(string, "%d", i);
                     ListView_SetItemText(hList, i, 0, string);
@@ -130,7 +125,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 return (INT_PTR)TRUE;
             }
             break;
-        case IDC_BUTTON4:
+        case IDC_BUTTON4: // Delete Currently Selected Item
             if (nIndex != -1)
             {
                 ListView_DeleteItem(hList, nIndex);
@@ -143,15 +138,35 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 return (INT_PTR)TRUE;
             }
             break;
-        case IDC_BUTTON5:
+        case IDC_BUTTON5: // Delete All
             if (nIndex != -1)
             {
-                ListView_DeleteAllItems(hList);
-                // 데이터 입력용 EditControl 데이터 클리어
-                SetDlgItemText(hDlg, IDC_EDIT1, NULL);
-                SetDlgItemText(hDlg, IDC_EDIT2, NULL);
-                SetDlgItemText(hDlg, IDC_EDIT3, NULL);
+                int msgBoxID = MessageBox(
+                    hDlg,
+                    "모든 데이터를 삭제 하시겠습니까? \n삭제를 원할 경우 확인 버튼을 눌러주세요!!",
+                    "삭제 확인",
+                    MB_ICONWARNING | MB_YESNO);
+                switch(msgBoxID)
+                {
+                case IDOK:
+                    ListView_DeleteAllItems(hList);
+                    // 데이터 입력용 EditControl 데이터 클리어
+                    ClearEditControl(hDlg);
+                    MessageBox(hDlg, "IDOK", "삭제 확인", MB_ICONWARNING | MB_YESNO);
+                    break;
+                case IDNO:
+                    MessageBox(
+                        hDlg,
+                        "IDNO",
+                        "삭제 확인",
+                        MB_ICONWARNING | MB_YESNO);
+                    break;
+                }
                 return (INT_PTR)TRUE;
+            }
+            else {
+                MessageBox(hDlg, "Not Selected ListView. Try Again.", "Error Notifier", MB_OK);
+                break;
             }
             break;
         }
@@ -178,6 +193,13 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+// 데이터 입력후 입력 창 지우기
+VOID ClearEditControl(HWND hDlg)
+{
+    SetDlgItemText(hDlg, IDC_EDIT1, NULL);
+    SetDlgItemText(hDlg, IDC_EDIT2, NULL);
+    SetDlgItemText(hDlg, IDC_EDIT3, NULL);
 }
 
 // 정보 대화 상자의 메시지 처리기입니다.
