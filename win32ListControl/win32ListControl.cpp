@@ -16,6 +16,7 @@
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    DlgProc(HWND, UINT, WPARAM, LPARAM);
+VOID                ClearEditControl(HWND);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -96,9 +97,62 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 SetDlgItemText(hDlg, IDC_EDIT2, NULL);
                 SetDlgItemText(hDlg, IDC_EDIT3, NULL);
                 return (INT_PTR)TRUE;
-
             }
+            break;
+        case IDC_BUTTON3:
+            if (nIndex != -1)
+            {
+                lvItem.iItem = nIndex;
+                lvItem.iSubItem = 0;
+                lvItem.mask = LVIF_TEXT;
+                sprintf_s(string, "%d", lvItem.iItem);
+                lvItem.pszText = string;
+                ListView_InsertItem(hList, &lvItem);
 
+                // ListView SubItem Input
+                GetDlgItemText(hDlg, IDC_EDIT1, string, 10);
+                ListView_SetItemText(hList, nIndex, 1, string);
+                GetDlgItemText(hDlg, IDC_EDIT2, string, 10);
+                ListView_SetItemText(hList, nIndex, 2, string);
+                GetDlgItemText(hDlg, IDC_EDIT3, string, 10);
+                ListView_SetItemText(hList, nIndex, 3, string);
+
+                // 데이터 입력용 EditControl 데이터 클리어
+                SetDlgItemText(hDlg, IDC_EDIT1, NULL);
+                SetDlgItemText(hDlg, IDC_EDIT2, NULL);
+                SetDlgItemText(hDlg, IDC_EDIT3, NULL);
+                // 순번을 다시 설정함
+                for (int i = nIndex + 1; i < nIndex; i++)
+                {
+                    sprintf_s(string, "%d", i);
+                    ListView_SetItemText(hList, i, 0, string);
+                }
+                return (INT_PTR)TRUE;
+            }
+            break;
+        case IDC_BUTTON4:
+            if (nIndex != -1)
+            {
+                ListView_DeleteItem(hList, nIndex);
+                int nCount = ListView_GetItemCount(hList);
+                for (int i = nIndex; i < nCount; i++)
+                {
+                    sprintf_s(string, "%d", i);
+                    ListView_SetItemText(hList, i, 0, string);
+                }
+                return (INT_PTR)TRUE;
+            }
+            break;
+        case IDC_BUTTON5:
+            if (nIndex != -1)
+            {
+                ListView_DeleteAllItems(hList);
+                // 데이터 입력용 EditControl 데이터 클리어
+                SetDlgItemText(hDlg, IDC_EDIT1, NULL);
+                SetDlgItemText(hDlg, IDC_EDIT2, NULL);
+                SetDlgItemText(hDlg, IDC_EDIT3, NULL);
+                return (INT_PTR)TRUE;
+            }
             break;
         }
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
