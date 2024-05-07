@@ -9,7 +9,13 @@
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
-//LOGIN_INFO g_sLoginInfo;
+struct LOGIN_INFO
+{
+    char name[100];
+    char password[20];
+};
+
+LOGIN_INFO g_sLoginInfo;
 HWND hWnd, g_MainWnd;
 //CSTUDENT g_Student;
 
@@ -19,11 +25,6 @@ LRESULT CALLBACK    DlgProc1(HWND, UINT, WPARAM, LPARAM); // 메인
 LRESULT CALLBACK    DlgProc2(HWND, UINT, WPARAM, LPARAM); // 로그인 
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-struct LOGIN_INFO
-{
-    char name[100];
-    char password[20];
-};
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -60,21 +61,32 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         return (INT_PTR)TRUE;
 
     case WM_COMMAND:
-        switch (LOWORD(lParam))
+        switch (LOWORD(wParam))
         {
         case IDOK:
-            MessageBox(0, "아이디가 맞지 않습니다.", "로그인 정보 확인", MB_OK);
             GetDlgItemText(hDlg, IDC_EDIT1, sInputLoin.name, 12);
             GetDlgItemText(hDlg, IDC_EDIT2, sInputLoin.password, 12);
-            if (strcmp(sLoginInfo.name, sInputLoin.name) !=0)
+            if (strcmp(sLoginInfo.name, sInputLoin.name) != 0)
             {
                 MessageBox(0, "아이디가 맞지 않습니다.", "로그인 정보 확인", MB_OK);
                 SetDlgItemText(hDlg, IDC_EDIT1, "");
                 SetFocus(GetDlgItem(hDlg, IDC_EDIT1));
+                return (INT_PTR)TRUE;
             }
+            if (strcmp(sLoginInfo.password, sInputLoin.password) != 0 && 
+                sInputLoin.password != NULL)
+            {
+                MessageBox(0, "패스워드가 맞지 않습니다.", "로그인 정보 확인", MB_OK);
+                SetDlgItemText(hDlg, IDC_EDIT2, "");
+                SetFocus(GetDlgItem(hDlg, IDC_EDIT2));
+                return (INT_PTR)TRUE;
+            }
+            memcpy(&g_sLoginInfo, &sLoginInfo, sizeof(LOGIN_INFO));
+            EndDialog(hDlg, 1);
+            return(INT_PTR)TRUE;
         case IDCANCEL:
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
+            EndDialog(hDlg, -1);
+            return(INT_PTR)TRUE;
         }
         break;
     case WM_CLOSE:
