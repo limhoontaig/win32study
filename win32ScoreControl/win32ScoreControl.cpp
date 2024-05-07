@@ -23,6 +23,7 @@ HWND hWnd, g_MainWnd;
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 LRESULT CALLBACK    DlgProc1(HWND, UINT, WPARAM, LPARAM); // 메인
 LRESULT CALLBACK    DlgProc2(HWND, UINT, WPARAM, LPARAM); // 로그인 
+LRESULT CALLBACK    DlgProc3(HWND, UINT, WPARAM, LPARAM); // 관리자 
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 
@@ -96,6 +97,26 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
+// 관리자 정보변경 대화 상자의 메시지 처리기입니다.
+INT_PTR CALLBACK DlgProc3(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    UNREFERENCED_PARAMETER(lParam);
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        return (INT_PTR)TRUE;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+        {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        break;
+    }
+    return (INT_PTR)FALSE;
+}
+
 // 다이어로그 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK DlgProc1(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -106,6 +127,12 @@ INT_PTR CALLBACK DlgProc1(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         return (INT_PTR)TRUE;
 
     case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case ID_32771:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG3), hDlg, DlgProc3);
+            break;
+        }
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {
             EndDialog(hDlg, LOWORD(wParam));
