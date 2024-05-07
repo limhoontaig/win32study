@@ -2,6 +2,7 @@
 //
 
 #include <windows.h>
+#include <iostream>
 #include "framework.h"
 #include "win32ScoreControl.h"
 
@@ -14,8 +15,15 @@ HWND hWnd, g_MainWnd;
 
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
-LRESULT CALLBACK    DlgProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK    DlgProc1(HWND, UINT, WPARAM, LPARAM); // 메인
+LRESULT CALLBACK    DlgProc2(HWND, UINT, WPARAM, LPARAM); // 로그인 
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+struct LOGIN_INFO
+{
+    char name[100];
+    char password[20];
+};
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -23,14 +31,61 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
     //HINSTANCE hInstance;
-    if (DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, DlgProc) == NULL)
+    if (DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG2), 0, DlgProc2) == -1)
         return 0;
-    DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, DlgProc);
+    DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, DlgProc1);
     return 0;
 }
 
+// 로그인 다이어로그 대화 상자의 메시지 처리기입니다.
+INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    
+    FILE* fp;
+    static LOGIN_INFO sLoginInfo;
+    static HWND hIDWnd, hPassword;
+    LOGIN_INFO sInputLoin;
+    UNREFERENCED_PARAMETER(lParam);
+    switch (message)
+    {
+    case WM_INITDIALOG:
+        fopen_s(&fp, "secret.txt", "r");
+        if (fp == 0)
+        {
+            MessageBox(hDlg, "File Open Error", "FILE OPEN", MB_YESNO);
+        }
+        fscanf_s(fp, "%s, %s", sLoginInfo.name, sizeof(sLoginInfo.name), 
+            sLoginInfo.password, sizeof(sLoginInfo.password));
+        fclose(fp);
+        return (INT_PTR)TRUE;
+
+    case WM_COMMAND:
+        switch (LOWORD(lParam))
+        {
+        case IDOK:
+            MessageBox(0, "아이디가 맞지 않습니다.", "로그인 정보 확인", MB_OK);
+            GetDlgItemText(hDlg, IDC_EDIT1, sInputLoin.name, 12);
+            GetDlgItemText(hDlg, IDC_EDIT2, sInputLoin.password, 12);
+            if (strcmp(sLoginInfo.name, sInputLoin.name) !=0)
+            {
+                MessageBox(0, "아이디가 맞지 않습니다.", "로그인 정보 확인", MB_OK);
+                SetDlgItemText(hDlg, IDC_EDIT1, "");
+                SetFocus(GetDlgItem(hDlg, IDC_EDIT1));
+            }
+        case IDCANCEL:
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        break;
+    case WM_CLOSE:
+        EndDialog(hDlg, 0);
+        return (INT_PTR)FALSE;
+    }
+    return (INT_PTR)FALSE;
+}
+
 // 다이어로그 대화 상자의 메시지 처리기입니다.
-INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK DlgProc1(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
     switch (message)
