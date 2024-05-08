@@ -17,6 +17,7 @@ struct LOGIN_INFO
 
 LOGIN_INFO g_sLoginInfo;
 HWND hWnd, g_MainWnd;
+HINSTANCE hInst;
 //CSTUDENT g_Student;
 
 
@@ -47,6 +48,7 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     static LOGIN_INFO sLoginInfo;
     static HWND hIDWnd, hPassword;
     LOGIN_INFO sInputLoin;
+    char string[20];
     UNREFERENCED_PARAMETER(lParam);
     switch (message)
     {
@@ -56,7 +58,8 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         {
             MessageBox(hDlg, "File Open Error", "FILE OPEN", MB_YESNO);
         }
-        fscanf_s(fp, "%s, %s", sLoginInfo.name, sizeof(sLoginInfo.name), 
+        fseek(fp, 0L, SEEK_SET);
+        fscanf_s(fp, "%s, %s, %s", sLoginInfo.name, sizeof(sLoginInfo.name), 
             sLoginInfo.password, sizeof(sLoginInfo.password));
         fclose(fp);
         return (INT_PTR)TRUE;
@@ -67,6 +70,7 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         case IDOK:
             GetDlgItemText(hDlg, IDC_EDIT1, sInputLoin.name, 12);
             GetDlgItemText(hDlg, IDC_EDIT2, sInputLoin.password, 12);
+            
             if (strcmp(sLoginInfo.name, sInputLoin.name) != 0)
             {
                 MessageBox(0, "아이디가 맞지 않습니다.", "로그인 정보 확인", MB_OK);
@@ -74,7 +78,8 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 SetFocus(GetDlgItem(hDlg, IDC_EDIT1));
                 return (INT_PTR)TRUE;
             }
-            if (strcmp(sLoginInfo.password, sInputLoin.password) != 0 && 
+
+            if (strcmp(sLoginInfo.password, sInputLoin.password) != 0 &&
                 sInputLoin.password != NULL)
             {
                 MessageBox(0, "패스워드가 맞지 않습니다.", "로그인 정보 확인", MB_OK);
@@ -82,6 +87,7 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 SetFocus(GetDlgItem(hDlg, IDC_EDIT2));
                 return (INT_PTR)TRUE;
             }
+                        
             memcpy(&g_sLoginInfo, &sLoginInfo, sizeof(LOGIN_INFO));
             EndDialog(hDlg, 1);
             return(INT_PTR)TRUE;
