@@ -58,8 +58,8 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         {
             MessageBox(hDlg, "File Open Error", "FILE OPEN", MB_YESNO);
         }
-        fseek(fp, 0L, SEEK_SET);
-        fscanf_s(fp, "%s, %s, %s", sLoginInfo.name, sizeof(sLoginInfo.name), 
+        //fseek(fp, 0L, SEEK_SET);
+        fscanf_s(fp, "%s, %s", sLoginInfo.name, sizeof(sLoginInfo.name), 
             sLoginInfo.password, sizeof(sLoginInfo.password));
         fclose(fp);
         return (INT_PTR)TRUE;
