@@ -22,5 +22,6 @@
   <ItemGroup>
     <Text Include="test.txt" />
     <Text Include="user_info.txt" />
+    <Text Include="..\win32ScoreControl\secret.txt" />
   </ItemGroup>
 </Project>

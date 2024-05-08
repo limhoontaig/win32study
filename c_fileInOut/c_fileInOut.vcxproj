@@ -130,6 +130,7 @@
     <ClCompile Include="c_fileInOut.c" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\win32ScoreControl\secret.txt" />
     <Text Include="test.txt" />
     <Text Include="user_info.txt" />
   </ItemGroup>
