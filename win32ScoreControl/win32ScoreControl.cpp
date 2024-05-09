@@ -10,11 +10,11 @@
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
-struct LOGIN_INFO
+typedef struct LOGIN_INFO
 {
     char name[100];
     char password[20];
-};
+} LOGIN_INFO;
 
 LOGIN_INFO g_sLoginInfo;
 HWND hWnd, g_MainWnd;
