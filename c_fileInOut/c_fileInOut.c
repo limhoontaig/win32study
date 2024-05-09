@@ -31,6 +31,9 @@ int main()
 	void NumberOfUsers(int* num_Users);
 
 	NumberOfUsers(&num_Users);
+
+	(struct USER_INFO*) puser = struct USER_INFO;
+	= (struct USER_INFO*)malloc(sizeof(struct USER_INFO) * 10);// num_Users);
 	printf("Number of Users : %d\n\n", num_Users);
 	
 	fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "r");
@@ -42,8 +45,8 @@ int main()
 	
 	for (int i = 0; i < num_Users; i++)
 	{
-		fscanf(fp, "%d %s %s", U_I->index, U_I->User_ID, U_I->User_PW);
-		printf("No %d, 순번 %d, name %s, password %s\n", i, age, name, password );
+		fscanf(fp, "%d %s %s", user[i]->index, user[i]->User_ID, user[i]->User_PW);
+		printf("No %d, 순번 %d, name %s, password %s\n", i, index, name, password );
 	}
 	fclose(fp);
 	return 0;

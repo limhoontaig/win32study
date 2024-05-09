@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32ScoreControl", "win32S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "c_fileInOut", "c_fileInOut\c_fileInOut.vcxproj", "{DCE4FB68-39F7-4E92-9D39-BAFD228567E1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "c_malloc", "c_malloc\c_malloc.vcxproj", "{ED68C28A-450F-4476-90D0-163B6D224F24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -201,6 +203,14 @@ Global
 		{DCE4FB68-39F7-4E92-9D39-BAFD228567E1}.Release|x64.Build.0 = Release|x64
 		{DCE4FB68-39F7-4E92-9D39-BAFD228567E1}.Release|x86.ActiveCfg = Release|Win32
 		{DCE4FB68-39F7-4E92-9D39-BAFD228567E1}.Release|x86.Build.0 = Release|Win32
+		{ED68C28A-450F-4476-90D0-163B6D224F24}.Debug|x64.ActiveCfg = Debug|x64
+		{ED68C28A-450F-4476-90D0-163B6D224F24}.Debug|x64.Build.0 = Debug|x64
+		{ED68C28A-450F-4476-90D0-163B6D224F24}.Debug|x86.ActiveCfg = Debug|Win32
+		{ED68C28A-450F-4476-90D0-163B6D224F24}.Debug|x86.Build.0 = Debug|Win32
+		{ED68C28A-450F-4476-90D0-163B6D224F24}.Release|x64.ActiveCfg = Release|x64
+		{ED68C28A-450F-4476-90D0-163B6D224F24}.Release|x64.Build.0 = Release|x64
+		{ED68C28A-450F-4476-90D0-163B6D224F24}.Release|x86.ActiveCfg = Release|Win32
+		{ED68C28A-450F-4476-90D0-163B6D224F24}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
