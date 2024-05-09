@@ -15,6 +15,7 @@ int main()
 	double height;
 	double ave_age = 0;
 	int nFileSize;
+	
 
 	/*
 	if ((fp = fopen("user_info.txt", "a")) == NULL) {
@@ -30,25 +31,34 @@ int main()
 	}
 	fclose(fp);
 	*/
-
-	if ((fp = fopen("C:\\Users\\82109\\source\\repos\\limhoontaig\\win32study\\win32ScoreControl\\secret.txt", "r")) == NULL) {
+	fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "r");
+	if (fp  == NULL) {
 		printf("파일열기 실패\n");
 	}
+	/*while (1) {
+		char c = fgetc(fp);
+		if (c == EOF)
+			break;
+		printf("%c\n", c);
+	}
+	*/
 
 	for (i = 0; i < 5; i++) {
-		fscanf(fp, "%s %s ", name, password);
-		printf("name %s, password %4\n", name, password );
+		fscanf(fp, "%s %s", name, password);
+		printf("name %s, password %s\n", name, password );
 		//ave_age += (double)age;
 	}
 
 	//printf("유저들의 평균나이 : %0.2lf\n", ave_age / 5);
-
+	/*
 	fseek(fp, 0, SEEK_END);
 	nFileSize = ftell(fp);
-	fclose(fp);
 	printf("file size of user_info.text : %d", nFileSize);
-
+	*/
+	fclose(fp);
+	//}
 	return 0;
+
 }
 
 
