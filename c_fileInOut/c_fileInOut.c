@@ -3,6 +3,13 @@
 
 #include<stdio.h>
 
+struct USER_INFO
+{
+	int index;
+	char User_ID[30];
+	char User_PW[20];
+};
+
 int main()
 {
 	FILE* fp;
@@ -16,9 +23,11 @@ int main()
 	char buf[100];
 	int len;
 	int count = 0;
-	int num_Users = 0;
+	int const num_Users = 10;
 	int* pnum_Users = &num_Users;
 	
+	struct USER_INFO U_I[10];
+
 	void NumberOfUsers(int* num_Users);
 
 	NumberOfUsers(&num_Users);
@@ -33,7 +42,7 @@ int main()
 	
 	for (int i = 0; i < num_Users; i++)
 	{
-		fscanf(fp, "%d %s %s", &age, name, password);
+		fscanf(fp, "%d %s %s", U_I->index, U_I->User_ID, U_I->User_PW);
 		printf("No %d, 순번 %d, name %s, password %s\n", i, age, name, password );
 	}
 	fclose(fp);
