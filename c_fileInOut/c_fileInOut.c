@@ -8,26 +8,37 @@
 int main()
 {
 	FILE* fp;
-	int i;
+	int i = 0;
 	char name[100];
 	char password[20];
 	int age;
 	double height;
 	double ave_age = 0;
 	int nFileSize;
+	char buf[100];
+	int len;
+	int count = 0;
+	int num_Users;
+	int* pnum_Users = &num_Users;
 	
+	void NumberOfUsers(int* num_Users);
 
+	NumberOfUsers(&num_Users);
+	printf("Number of Users : %d\n\n", num_Users);
 	/*
-	if ((fp = fopen("user_info.txt", "a")) == NULL) {
+	if ((fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "a")) == NULL) {
 		printf("파일열기 실패\n");
 	}
 	
 	
-	for (i = 0; i < 2; i++) {
-		printf("%d번째 유저정보를 입력 (나이, 이름, 키 순): ", i);
-		scanf("%d %s %lf", &age, name, &height);
+	for (i = 0; i < 1; i++) 
+	{
+		printf("%d번째 유저정보를 입력 (아이디): \n", i);
+		scanf("%s",name);
+		printf("%d번째 유저정보를 입력 (비밀번호): \n", i);
+		scanf("%s", password);
 
-		fprintf(fp, "%d %s %lf\n", age, name, height);
+		fprintf(fp, "%s %s \n", name, password);
 	}
 	fclose(fp);
 	*/
@@ -35,17 +46,32 @@ int main()
 	if (fp  == NULL) {
 		printf("파일열기 실패\n");
 	}
-	/*while (1) {
-		char c = fgetc(fp);
-		if (c == EOF)
+	/*
+	while (1) 
+	{
+		fgets(buf, 100, fp);
+		len = strlen(buf);
+		if (len == 0)
 			break;
-		printf("%c\n", c);
+		fscanf(fp, "%d %s %s", &i, name, password);
+		printf("while No %d name %s, password %s\n", i, name, password);
+		count++;
+		buf[0] = NULL;
 	}
+	
+	fclose(fp);
 	*/
-
-	for (i = 0; i < 5; i++) {
-		fscanf(fp, "%s %s", name, password);
-		printf("name %s, password %s\n", name, password );
+	fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "r");
+	if (fp == NULL) {
+		printf("파일열기 실패\n");
+	}
+	
+	// for (i = 0; i < count; i++) {
+	while(!feof(fp))
+	{
+		
+		fscanf(fp, "%d %s %s", &age, name, password);
+		printf("No %d, 순번 %d, name %s, password %s\n", i, age, name, password );
 		//ave_age += (double)age;
 	}
 
@@ -61,6 +87,26 @@ int main()
 
 }
 
+void NumberOfUsers(int* a) {
+	FILE* fp;
+	char buf[100];
+	int len;
+	int count= 0;
+	if ((fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "r")) == NULL) {
+		printf("파일열기 실패\n");
+	}
+	while (1)
+	{
+		fgets(buf, 100, fp);
+		len = strlen(buf);
+		if (len == 0)
+			break;
+		*a = count++;
+		buf[0] = NULL;
+	}
+
+	fclose(fp);
+}
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
 // 프로그램 디버그: <F5> 키 또는 [디버그] > [디버깅 시작] 메뉴
