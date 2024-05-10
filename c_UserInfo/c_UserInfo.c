@@ -57,6 +57,7 @@ void userInfoLoad(void)
 		//printf("%2d %4d %-15s %-15s\n", i,
 			//userInfo[i].UserIndex, userInfo[i].UserID, userInfo[i].UserPW);
 	}
+	oldNumOfUsers = numOfUsers;
 	fclose(fp);
 }
 
@@ -96,7 +97,7 @@ int main()
 			FILE* fp;
 			if (oldNumOfUsers < numOfUsers)
 			{
-				fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "r");
+				fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "w");
 				if (fp == NULL) {
 					fp = fopen("C:\\Users\\82109\\source\\repos\\limhoontaig\\win32study\\win32ScoreControl\\secret.txt", "w");
 					if (fp == NULL)
@@ -104,9 +105,10 @@ int main()
 				}
 				for (int i = 0; i < numOfUsers; i++)
 				{
-					fprintf("%d %s %s\n",
+					fprintf(fp, "%d %s %s\n",
 						userInfo[i].UserIndex, userInfo[i].UserID, userInfo[i].UserPW);
 				}
+				fclose(fp);
 			}
 			else
 			{ 
