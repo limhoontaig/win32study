@@ -70,13 +70,13 @@ int main()
 
 		printf("==========메뉴=========\n");
 		printf("1. Input Add New User\n");
-		//printf("2. User Load from File\n");
 		printf("2. Save User Data to File\n");
+		printf("3. Search of User Information\n");
 		printf("4. Delete User\n");
 		printf("5. Play the User List on Screen\n");
 		printf("6. Quit the Program\n\n");
 		scanf("%d", &menu);
-		if (menu < 1 || menu > 5)
+		if (menu < 1 || menu > 6)
 		{
 			printf("잘못된 입력입니다. 1 ~ 5 사이의 숫자를 입력하세요\n");
 			continue;
@@ -117,6 +117,43 @@ int main()
 			}
 			
 		}
+		else if (menu == 3)
+		{
+			int snum;
+			int exists = 0;
+			printf("=== Search for User Information ===\n");
+			printf("User Number : ");
+			scanf("%d", &snum);
+			for (int i = 0; i < numOfUsers; i++) {
+				if (userInfo[i].UserIndex == snum) {
+					printf("이용자 번호 : %d 이용자 아이디 : %s 이용자 비밀번호 : %s\n", userInfo[i].UserIndex,
+						userInfo[i].UserID, userInfo[i].UserPW);
+					exists++;
+					break;
+				}
+			}
+			if (exists == 0) {
+				printf("사용자 %d가 존재하지 않습니다.", snum);
+			}
+		}
+		else if (menu == 4) {
+			int snum;
+			int exists = 0;
+			printf("===학생 삭제===\n");
+			printf("학생 번호: ");
+			scanf("%d", &snum);
+			for (int i = 0; i < num_of_student; i++) {
+				if (students[i].snum == snum) {
+					printf("학생 번호 : %d 이용자 아이디 : %s 이 삭제됩니다.\n",
+						students[i].snum, students[i].sname);
+					for (int j = i; j < num_of_student; j++) {
+						students[j] = students[j + 1];
+					}
+					num_of_student--;
+					exists++;
+					break;
+				}
+			}
 		else if (menu == 5)
 		{
 			printf("No 순번     User ID      User password\n");
@@ -128,8 +165,12 @@ int main()
 			}
 		}
 		else if (menu == 6)
+		{
 			return 0;
+		}
+
 	}
+	return 0;
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
