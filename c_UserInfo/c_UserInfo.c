@@ -18,10 +18,21 @@ typedef struct UserInfo
 UserInfo userInfo[MAX_USER];
 int numOfUsers = 0;
 int oldNumOfUsers = 0;
+FILE* fileOpen()
+{
+	FILE* fp;
+	fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "r");
+	if (fp == NULL) {
+		fp = fopen("C:\\Users\\82109\\source\\repos\\limhoontaig\\win32study\\win32ScoreControl\\secret.txt", "r");
+		if (fp == NULL)
+			printf("파일열기 실패\n");
+	}
+	return &fp;
+}
 
 void userInfoLoad(void)
 {
-	FILE* fp;
+	FILE* fp;// = fileOpen();
 	char buf[100];
 	int len;
 	numOfUsers = 0;
@@ -142,18 +153,19 @@ int main()
 			printf("===학생 삭제===\n");
 			printf("학생 번호: ");
 			scanf("%d", &snum);
-			for (int i = 0; i < num_of_student; i++) {
-				if (students[i].snum == snum) {
-					printf("학생 번호 : %d 이용자 아이디 : %s 이 삭제됩니다.\n",
-						students[i].snum, students[i].sname);
-					for (int j = i; j < num_of_student; j++) {
-						students[j] = students[j + 1];
+			for (int i = 0; i < numOfUsers; i++) {
+				if (userInfo[i].UserIndex == snum) {
+					printf("이용자 번호 : %d 이용자 아이디 : %s 이용자 비밀번호 : %s 가 삭제됩니다.\n",
+						userInfo[i].UserIndex, userInfo[i].UserID, userInfo[i].UserPW);
+					for (int j = i; j < numOfUsers; j++) {
+						userInfo[j] = userInfo[j + 1];
 					}
-					num_of_student--;
+					numOfUsers--;
 					exists++;
 					break;
 				}
 			}
+		}
 		else if (menu == 5)
 		{
 			printf("No 순번     User ID      User password\n");
