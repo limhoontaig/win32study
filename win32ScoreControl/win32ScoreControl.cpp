@@ -182,16 +182,18 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         switch (LOWORD(wParam))
         {
         case IDC_BUTTON1: // Data Load from File
+            //delete All User and add list from userInfo array 
+            ListView_DeleteAllItems(hList);
             for (int i = 0; i < numOfUsers; i++)
             {
                 // ListView 초기화 및 Index 생성
-                lvItem.iItem = ListView_GetItemCount(hList);
+                lvItem.iItem = i;//ListView_GetItemCount(hList);
 
                 lvItem.iSubItem = 0;
                 lvItem.mask = LVIF_TEXT;
                 sprintf_s(string, "%d", lvItem.iItem);
                 lvItem.pszText = string;
-                ListView_InsertItem(hList, &lvItem);
+                ListView_InsertItem(hList, &lvItem);//////////
 
                 sprintf_s(string, "%d", userInfo[i].UserIndex);
                 ListView_SetItemText(hList, i, 1, string);
@@ -224,6 +226,11 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             GetDlgItemText(hDlg, IDC_EDIT3, string, MAX_PW_LEN);
             ListView_SetItemText(hList, lvItem.iItem, 3, string);
             strcpy(userInfo[lvItem.iItem].UserPW, string);
+
+            SetDlgItemText(hDlg, IDC_EDIT1, "");
+            SetDlgItemText(hDlg, IDC_EDIT2, "");
+            SetDlgItemText(hDlg, IDC_EDIT3, "");
+
             numOfUsers++;
 
             // 데이터 입력용 EditControl 데이터 클리어
@@ -401,8 +408,9 @@ void userInfoLoad(void)
         if (fp == NULL)
             printf("파일열기 실패\n");
     }
-    // 구조체 초기화
-    memset(&userInfo, 0, sizeof(userInfo));
+    // 구조체 삭제초기화
+    memset(&userInfo, NULL, sizeof(USERINFO));
+
     // 파일에서 구조체 할당
     for (int i = 0; i < numOfUsers; i++)
     {
@@ -411,6 +419,8 @@ void userInfoLoad(void)
     oldNumOfUsers = numOfUsers;
     fclose(fp);
 }
+
+
 void userInfoSave(void)
 {
     FILE* fp;
