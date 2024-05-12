@@ -52,9 +52,9 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR    lpCmdLine,
+    _In_ int       nCmdShow)
 {
     //HINSTANCE hInstance;
     if (DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG2), 0, DlgProc2) == -1)
@@ -83,7 +83,7 @@ INT_PTR CALLBACK DlgProc3(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             GetDlgItemText(hDlg, IDC_EDIT2, inputUserInfo.UserID, MAX_ID_LEN);
             GetDlgItemText(hDlg, IDC_EDIT4, inputUserInfo.UserPW, MAX_PW_LEN);
             GetDlgItemText(hDlg, IDC_EDIT5, temp, MAX_PW_LEN);
-            if (strcmp(inputUserInfo.UserPW, temp) == 0) 
+            if (strcmp(inputUserInfo.UserPW, temp) == 0)
             {
                 if (inputUserInfo.UserID != "")
                 {
@@ -165,7 +165,7 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     {
     case WM_INITDIALOG:
         hList = GetDlgItem(hDlg, IDC_LIST1);
-        ListView_SetExtendedListViewStyle(hList, LVS_EX_FULLROWSELECT | 
+        ListView_SetExtendedListViewStyle(hList, LVS_EX_FULLROWSELECT |
             LVS_EX_GRIDLINES); // | LVM_EDITLABEL (Item에 checkBox 추가됨)
         lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
         lvColumn.fmt = LVCFMT_CENTER;
@@ -186,7 +186,7 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             {
                 // ListView 초기화 및 Index 생성
                 lvItem.iItem = ListView_GetItemCount(hList);
-                
+
                 lvItem.iSubItem = 0;
                 lvItem.mask = LVIF_TEXT;
                 sprintf_s(string, "%d", lvItem.iItem);
@@ -196,7 +196,7 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 sprintf_s(string, "%d", userInfo[i].UserIndex);
                 ListView_SetItemText(hList, i, 1, string);
                 strcpy(string, userInfo[i].UserID);
-                ListView_SetItemText(hList, i, 2, string); 
+                ListView_SetItemText(hList, i, 2, string);
                 strcpy(string, userInfo[i].UserPW);
                 ListView_SetItemText(hList, i, 3, string);
 
@@ -207,7 +207,7 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         case IDC_BUTTON2: // ListView Add User Item
             // ListView 초기화 및 Index 생성
             numOfUsers = lvItem.iItem = ListView_GetItemCount(hList);
-            
+
             lvItem.iSubItem = 0;
             lvItem.mask = LVIF_TEXT;
             sprintf_s(string, "%d", lvItem.iItem);
@@ -225,9 +225,9 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             ListView_SetItemText(hList, lvItem.iItem, 3, string);
             strcpy(userInfo[lvItem.iItem].UserPW, string);
             numOfUsers++;
-            
+
             // 데이터 입력용 EditControl 데이터 클리어
-            ClearEditControl(hDlg);
+            //ClearEditControl(hDlg);
             return (INT_PTR)TRUE;
         case IDC_BUTTON3: // Modified
             if (nIndex != -1)
@@ -238,7 +238,7 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 userInfo[nIndex].UserIndex = atoi(string);
                 GetDlgItemText(hDlg, IDC_EDIT2, string, MAX_ID_LEN);
                 ListView_SetItemText(hList, nIndex, 2, string);
-                strcpy(userInfo[nIndex].UserID,string);
+                strcpy(userInfo[nIndex].UserID, string);
                 GetDlgItemText(hDlg, IDC_EDIT3, string, MAX_PW_LEN);
                 ListView_SetItemText(hList, nIndex, 3, string);
                 strcpy(userInfo[nIndex].UserPW, string);
@@ -426,6 +426,3 @@ void userInfoSave(void)
     }
     fclose(fp);
 }
-
-
-
