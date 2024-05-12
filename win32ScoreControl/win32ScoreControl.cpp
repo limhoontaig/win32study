@@ -266,8 +266,18 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 {
                     sprintf_s(string, "%d", i);
                     ListView_SetItemText(hList, i, 0, string);
+                    GetDlgItemText(hDlg, IDC_EDIT1, string, MAX_PW_LEN);
+                    ListView_SetItemText(hList, i, 1, string);
+                    GetDlgItemText(hDlg, IDC_EDIT2, string, MAX_PW_LEN);
+                    ListView_SetItemText(hList, i, 2, string);
+                    GetDlgItemText(hDlg, IDC_EDIT3, string, MAX_PW_LEN);
+                    ListView_SetItemText(hList, i, 3, string);
                     userInfo[i] = userInfo[i + 1];
                 }
+                SetDlgItemText(hDlg, IDC_EDIT1, "");
+                SetDlgItemText(hDlg, IDC_EDIT2, "");
+                SetDlgItemText(hDlg, IDC_EDIT3, "");
+
                 return (INT_PTR)TRUE;
             }
             break;
