@@ -3,8 +3,10 @@
 
 #pragma warning(disable : 4996)
 #include <windows.h>
+#include <windowsx.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <CommCtrl.h>
 #include "framework.h"
 #include "win32ScoreControl.h"
@@ -32,6 +34,8 @@ int oldNumOfUsers = 0;
 
 // 저장된 user 정보 loading(Number of users and login ID/PW)
 void userInfoLoad(void);
+// 변경된 user information save
+void userInfoSave(void);
 
 // 전역 변수:
 HWND hWnd, g_MainWnd;
@@ -110,7 +114,7 @@ INT_PTR CALLBACK DlgProc3(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
-// 다이어로그 대화 상자의 메시지 처리기입니다.
+// 메인 다이어로그 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK DlgProc1(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
@@ -161,7 +165,8 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     {
     case WM_INITDIALOG:
         hList = GetDlgItem(hDlg, IDC_LIST1);
-        ListView_SetExtendedListViewStyle(hList, LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
+        ListView_SetExtendedListViewStyle(hList, LVS_EX_FULLROWSELECT | 
+            LVS_EX_GRIDLINES); // | LVM_EDITLABEL (Item에 checkBox 추가됨)
         lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
         lvColumn.fmt = LVCFMT_CENTER;
         for (int i = 0; i < 4; i++)
@@ -176,7 +181,7 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
         switch (LOWORD(wParam))
         {
-        case IDC_BUTTON1: // ListView Insert Item
+        case IDC_BUTTON1: // Data Load from File
             for (int i = 0; i < numOfUsers; i++)
             {
                 // ListView 초기화 및 Index 생성
@@ -188,15 +193,80 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
                 lvItem.pszText = string;
                 ListView_InsertItem(hList, &lvItem);
 
-                strcpy(string, userInfo[i].UserPW);
+                sprintf_s(string, "%d", userInfo[i].UserIndex);
                 ListView_SetItemText(hList, i, 1, string);
                 strcpy(string, userInfo[i].UserID);
                 ListView_SetItemText(hList, i, 2, string); 
                 strcpy(string, userInfo[i].UserPW);
                 ListView_SetItemText(hList, i, 3, string);
+
+                //ClearEditControl(hDlg);
             }
-            //ClearEditControl(hDlg);
             return (INT_PTR)TRUE;
+
+        case IDC_BUTTON2: // ListView Add User Item
+            // ListView 초기화 및 Index 생성
+            numOfUsers = lvItem.iItem = ListView_GetItemCount(hList);
+            
+            lvItem.iSubItem = 0;
+            lvItem.mask = LVIF_TEXT;
+            sprintf_s(string, "%d", lvItem.iItem);
+            lvItem.pszText = string;
+            ListView_InsertItem(hList, &lvItem);
+
+            // ListView SubItem Input
+            GetDlgItemText(hDlg, IDC_EDIT1, string, 10);
+            ListView_SetItemText(hList, lvItem.iItem, 1, string);
+            userInfo[lvItem.iItem].UserIndex = atoi(string);
+            GetDlgItemText(hDlg, IDC_EDIT2, string, MAX_ID_LEN);
+            ListView_SetItemText(hList, lvItem.iItem, 2, string);
+            strcpy(userInfo[lvItem.iItem].UserID, string);
+            GetDlgItemText(hDlg, IDC_EDIT3, string, MAX_PW_LEN);
+            ListView_SetItemText(hList, lvItem.iItem, 3, string);
+            strcpy(userInfo[lvItem.iItem].UserPW, string);
+            numOfUsers++;
+            
+            // 데이터 입력용 EditControl 데이터 클리어
+            ClearEditControl(hDlg);
+            return (INT_PTR)TRUE;
+        case IDC_BUTTON3: // Modified
+            if (nIndex != -1)
+            {
+                // ListView SubItem Input
+                GetDlgItemText(hDlg, IDC_EDIT1, string, 10);
+                ListView_SetItemText(hList, nIndex, 1, string);
+                userInfo[nIndex].UserIndex = atoi(string);
+                GetDlgItemText(hDlg, IDC_EDIT2, string, MAX_ID_LEN);
+                ListView_SetItemText(hList, nIndex, 2, string);
+                strcpy(userInfo[nIndex].UserID,string);
+                GetDlgItemText(hDlg, IDC_EDIT3, string, MAX_PW_LEN);
+                ListView_SetItemText(hList, nIndex, 3, string);
+                strcpy(userInfo[nIndex].UserPW, string);
+
+                // 데이터 입력용 EditControl 데이터 클리어
+                //ClearEditControl(hDlg);
+                return (INT_PTR)TRUE;
+            }
+            break;
+
+        case IDC_BUTTON4: // Delete Currently Selected Item
+            if (nIndex != -1)
+            {
+                ListView_DeleteItem(hList, nIndex);
+                numOfUsers--; // 삭제 유저 수 반영
+                int nCount = ListView_GetItemCount(hList);
+                for (int i = nIndex; i < nCount; i++)
+                {
+                    sprintf_s(string, "%d", i);
+                    ListView_SetItemText(hList, i, 0, string);
+                    userInfo[i] = userInfo[i + 1];
+                }
+                return (INT_PTR)TRUE;
+            }
+            break;
+        case IDC_BUTTON6: // Save User Information 
+            userInfoSave();
+            break;
         }
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {
@@ -204,24 +274,34 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             return (INT_PTR)TRUE;
         }
         break;
+    case WM_NOTIFY:
+        switch (((LPNMHDR)lParam)->code)
+        {
+        case LVN_ITEMCHANGED: // 아직 안됨 (화면에서 수정하는 방법 연구 중)
+            nIndex = ListView_GetNextItem(hList, -1, LVNI_SELECTED);
+
+            ListView_GetItemText(hList, nIndex, 1, string, 10);
+            SetDlgItemText(hDlg, IDC_EDIT1, string);
+            ListView_GetItemText(hList, nIndex, 2, string, MAX_ID_LEN);
+            SetDlgItemText(hDlg, IDC_EDIT2, string);
+            ListView_GetItemText(hList, nIndex, 3, string, MAX_PW_LEN);
+            SetDlgItemText(hDlg, IDC_EDIT3, string);
+            return TRUE;
+
+        case NM_CLICK: // 마우스 크릭하면 선택항목 보여줌
+            nIndex = ListView_GetNextItem(hList, -1, LVNI_SELECTED);
+
+            ListView_GetItemText(hList, nIndex, 1, string, 10);
+            SetDlgItemText(hDlg, IDC_EDIT1, string);
+            ListView_GetItemText(hList, nIndex, 2, string, MAX_ID_LEN);
+            SetDlgItemText(hDlg, IDC_EDIT2, string);
+            ListView_GetItemText(hList, nIndex, 3, string, MAX_PW_LEN);
+            SetDlgItemText(hDlg, IDC_EDIT3, string);
+            return TRUE;
+        }
     }
     return (INT_PTR)FALSE;
 }
-        /* 출력 화면 작성이 어려워 다른 방법으로 함 listcontrol
-        char string[100];
-        sprintf(string, "No 순번     User ID      User password\n",
-            strlen("No 순번     User ID      User password\n"));
-        TextOut(hdc, 50, 10, string, strlen(string));
-        sprintf(string, "== ==== =============== ===============\n", 
-            strlen("== ==== =============== ===============\n"));
-        TextOut(hdc, 50, 30, string, strlen(string));
-
-        for (int i = 0; i < numOfUsers; i++)
-        {
-            sprintf(string, "%2d %4d %-15s %-15s\n", i,
-                userInfo[i].UserIndex, userInfo[i].UserID, userInfo[i].UserPW);
-            TextOut(hdc, 50, 50 + 20 * i, string, strlen(string));
-        }*/
 
 // 로그인 다이어로그 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -321,11 +401,29 @@ void userInfoLoad(void)
         if (fp == NULL)
             printf("파일열기 실패\n");
     }
+    // 구조체 초기화
+    memset(&userInfo, 0, sizeof(userInfo));
+    // 파일에서 구조체 할당
     for (int i = 0; i < numOfUsers; i++)
     {
         fscanf(fp, "%d %s %s", &userInfo[i].UserIndex, &userInfo[i].UserID, &userInfo[i].UserPW);
     }
     oldNumOfUsers = numOfUsers;
+    fclose(fp);
+}
+void userInfoSave(void)
+{
+    FILE* fp;
+    fp = fopen("E:\\win32Study\\win32ScoreControl\\secret.txt", "w");
+    if (fp == NULL) {
+        fp = fopen("C:\\Users\\82109\\source\\repos\\limhoontaig\\win32study\\win32ScoreControl\\secret.txt", "w");
+        if (fp == NULL)
+            printf("파일열기 실패\n");
+    }
+    for (int i = 0; i < numOfUsers; i++)
+    {
+        fprintf(fp, "%d %s %s\n", userInfo[i].UserIndex, &userInfo[i].UserID, &userInfo[i].UserPW);
+    }
     fclose(fp);
 }
 
