@@ -284,13 +284,20 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         case IDC_BUTTON6: // Save User Information 
             userInfoSave();
             break;
+        case IDC_BUTTON7:
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
         }
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+
+        //LOWORD(wParam) == IDOK
+        /*if (LOWORD(wParam) == IDCANCEL)
         {
             EndDialog(hDlg, LOWORD(wParam));
             return (INT_PTR)TRUE;
         }
+        */
         break;
+
     case WM_NOTIFY:
         switch (((LPNMHDR)lParam)->code)
         {
@@ -446,3 +453,28 @@ void userInfoSave(void)
     }
     fclose(fp);
 }
+
+
+/*
+case WM_COMMAND:
+    if (wParam = IDOFDEFBUTTON || IDOK) 
+    {          
+        // User has hit the ENTER key.
+        hwndTest = GetFocus() ;
+        retVal = TesthWnd(hWndTest) ;          
+        // Where retVal is a boolean variable that indicates whether        
+        // the hwndTest is the handle of one of the edit controls.          
+        if(hwndTest) {         
+            //Focus is with an edit control, so do not close the dialog.            
+            // Move focus to the next control in the dialog.         
+            PostMessage(hDlg, WM_NEXTDLGCTL, 0, 0L) ;
+            return TRUE ;
+        }          
+        else {
+            //Focus is with the default button, so close the dialog.            
+            EndDialog(hDlg, TRUE) ;
+            return FALSE ;
+        }
+    }
+    break ;
+    */

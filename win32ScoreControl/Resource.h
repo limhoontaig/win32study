@@ -29,6 +29,7 @@
 #define IDC_BUTTON4                     1010
 #define IDC_BUTTON5                     1011
 #define IDC_BUTTON6                     1012
+#define IDC_BUTTON7                     1013
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define IDC_STATIC                      -1
@@ -40,7 +41,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        133
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1013
+#define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
