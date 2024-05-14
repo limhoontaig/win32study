@@ -132,6 +132,9 @@ INT_PTR CALLBACK DlgProc1(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         case ID_32772:
             DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG4), hDlg, DlgProc4);
             break;
+        case IDC_BUTTON1:
+
+            break;
         }
         if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
         {
@@ -341,7 +344,7 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_COMMAND:
         switch (LOWORD(wParam))
         {
-        case IDOK:
+        case IDC_BUTTON1:
             GetDlgItemText(hDlg, IDC_EDIT1, inputUserInfo.UserID, MAX_ID_LEN);
             GetDlgItemText(hDlg, IDC_EDIT2, inputUserInfo.UserPW, MAX_PW_LEN);
             for (int i = 0; i < numOfUsers; i++)
@@ -368,7 +371,7 @@ INT_PTR CALLBACK DlgProc2(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_CLOSE:
-        EndDialog(hDlg, 0);
+        EndDialog(hDlg, -1);
         return (INT_PTR)FALSE;
     }
     return (INT_PTR)FALSE;
