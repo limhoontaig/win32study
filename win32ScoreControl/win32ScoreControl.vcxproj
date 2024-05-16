@@ -133,6 +133,7 @@
     <ClInclude Include="win32ScoreControl.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="temp.cpp" />
     <ClCompile Include="win32ScoreControl.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -133,15 +133,17 @@ INT_PTR CALLBACK DlgProc1(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG4), hDlg, DlgProc4);
             break;
         case IDC_BUTTON1:
-
-            break;
-        }
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
             EndDialog(hDlg, LOWORD(wParam));
             return (INT_PTR)TRUE;
         }
+        
+        if (LOWORD(wParam) == IDCANCEL)
+        {
+            EndDialog(hDlg, -1);
+            return (INT_PTR)TRUE;
+        }
         break;
+        
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
@@ -150,7 +152,11 @@ INT_PTR CALLBACK DlgProc1(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         EndPaint(hWnd, &ps);
     }
     break;
+    case WM_CLOSE:
+        EndDialog(hDlg, -1);
+        return (INT_PTR)FALSE;
     }
+    
     return (INT_PTR)FALSE;
 }
 
@@ -293,7 +299,8 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         }
 
         //LOWORD(wParam) == IDOK
-        /*if (LOWORD(wParam) == IDCANCEL)
+        /*
+        if (LOWORD(wParam) == IDCANCEL)
         {
             EndDialog(hDlg, LOWORD(wParam));
             return (INT_PTR)TRUE;
@@ -326,6 +333,9 @@ INT_PTR CALLBACK DlgProc4(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
             SetDlgItemText(hDlg, IDC_EDIT3, string);
             return TRUE;
         }
+    case WM_CLOSE:
+        //EndDialog(hDlg, LOWORD(wParam));
+        return (INT_PTR)TRUE;
     }
     return (INT_PTR)FALSE;
 }
